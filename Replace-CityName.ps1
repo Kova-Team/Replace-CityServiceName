@@ -21,13 +21,15 @@ Foreach($city in $NewCityList)
     $oldcity = $csvwebfile.'Service Name'
     $oldcitylower = $oldcity.ToLower()
     $newcitylower = ($city.'Service Name').ToLower()
+    $newcityforurl = $newcitylower -replace '\s',''
     $newcityUpper = $newcitylower.substring(0,1).toupper()+$newcitylower.substring(1).tolower()
     $csvwebfile.'Service Name' = $newcityUpper
     $csvwebfile.Slug = $newcitylower+"-ca"
     $csvwebfile.Heading = $csvwebfile.heading.Replace($oldcity,$newcityUpper)
     $csvwebfile.Subheading = $csvwebfile.subheading.Replace($oldcity,$newcityUpper)
     $csvwebfile.'Content 1' = $csvwebfile.'Content 1'.Replace($oldcity,$newcityUpper)
-    $regex = "(?i)\b$oldcity-ca\b"
+    $oldcityrmvspace = $oldcitylower -replace '\s',''
+    $regex = "(?i)\b$oldcityrmvspace-ca\b"
     $csvwebfile.'Content 1' = $csvwebfile.'Content 1' -replace $regex, "$newcitylower-ca"
     $csvwebfile.'Content 1' = $csvwebfile.'Content 1'.Replace($oldcity+"-ca",$newcitylower+"-ca")
     $csvwebfile.'Content 1' = $csvwebfile.'Content 1' -creplace $oldcitylower,$newcitylower
