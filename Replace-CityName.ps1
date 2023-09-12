@@ -3,13 +3,23 @@
 	Created By - Kristopher Roy
 	Created On - 27 Jul 2023
 	Modified On - 12 Sept 2023
-
 	This Script takes the export csv from wordpress and allows you to replace names
 #>
+
 $ver = '2.01'
 
 #variables
-
+$datestamp = Get-Date -Format "yyyyMMMdd"
+#folderlocation where files will be pulled and pushed
+#The headers in this file must be "Service Name, Slug, Heading, SubHeading, Content 1, CTA Heading, CTA SubHeading, Content 2" If these headers change, then the script will need to be updated
+$folderloc = 'C:\hardwoodfloor\cities\'
+#filename of the exported source
+$webfile = 'Floor Care Installation - Hardwood Floor Refinishing Cities.csv'
+#filename of the new city list to replace the old city names
+#The header in this file must be "Service Name" 
+$newcitylist = 'newcitylist.csv'
+#filename for the new export
+$UpdatedCitylist = ($datestamp+"-updatedcitylist.csv")
 
 #This is a function to handle multiple name cities and set the first letters to capitol
 function capitalize_city($city) {
@@ -37,11 +47,11 @@ EXIT}
 
 #This is the csv file to import for conversion replace the folder and file path of this file
 #The headers in this file must be "Service Name, Slug, Heading, SubHeading, Content 1, CTA Heading, CTA SubHeading, Content 2" If these headers change, then the script will need to be updated
-$csvwebfile = import-csv 'C:\Projects\Kova\Floor Care Installation - Hardwood Floor Refinishing Cities (4).csv'
+$csvwebfile = import-csv $folderloc$webfile
 
 #This is the csv file with the list of cities to place in the file replace the folder and file path of this file
 #The header in this file must be "Service Name" 
-$NewCityList = import-csv 'C:\Projects\Kova\city names - Floor Care Installation - Hardwood Floor Refinishing Cities (5).csv'
+$NewCityList = import-csv $folderloc$newcitylist
 
 #loop through the citylist and create new csvwebfiles to import back into wordpress
 Foreach($city in $NewCityList)
@@ -72,6 +82,6 @@ Foreach($city in $NewCityList)
     #Exports the content into a new individul csv files named whatever the new city is -export.csv
     #$csvwebfile|export-csv C:\Projects\Kova\$newcitylower-export.csv -NoTypeInformation -Encoding Unicode
 
-    #Exports the content into a new individul csv file named newcities-export.csv
-    $csvwebfile|export-csv "C:\Projects\Kova\newcities-export.csv" -NoTypeInformation -Encoding Unicode -append
+    #Exports the content into a new individul csv file named currentdate-updatedcitylist.csv
+    $csvwebfile|export-csv ($folderloc+$UpdatedCitylist) -NoTypeInformation -Encoding Unicode -append
 }
