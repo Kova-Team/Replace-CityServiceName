@@ -1,3 +1,5 @@
+$ver = '2.01'
+
 <#
 	Replace-CityName.ps1
 	Created By - Kristopher Roy
@@ -5,8 +7,6 @@
 	Modified On - 12 Sept 2023
 	This Script takes the export csv from wordpress and allows you to replace names
 #>
-
-$ver = '2.01'
 
 #variables
 $datestamp = Get-Date -Format "yyyyMMMdd"
