@@ -2,10 +2,14 @@
 	Replace-CityName.ps1
 	Created By - Kristopher Roy
 	Created On - 27 Jul 2023
-	Modified On - 29 Jul 2023
+	Modified On - 12 Sept 2023
 
 	This Script takes the export csv from wordpress and allows you to replace names
 #>
+$ver = '2.01'
+
+#variables
+
 
 #This is a function to handle multiple name cities and set the first letters to capitol
 function capitalize_city($city) {
@@ -20,6 +24,16 @@ function capitalize_city($city) {
   $capitalized_city = $capitalized_words -join " "
   return $capitalized_city
 }
+
+#Begin Script
+#Verify most recent version being used
+$curver = $ver
+$data = Invoke-RestMethod -Method Get -Uri https://raw.githubusercontent.com/Kova-Team/Replace-CityServiceName/main/Replace-CityName.ps1
+Invoke-Expression ($data.substring(0,13))
+if($curver -ge $ver){powershell -Command "& {[System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms'); [System.Windows.Forms.MessageBox]::Show('You are running the most current script version $ver')}"}
+ELSEIF($curver -lt $ver){powershell -Command "& {[System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms'); [System.Windows.Forms.MessageBox]::Show('You are running $curver the most current script version is $ver. Ending')}" 
+EXIT}
+
 
 #This is the csv file to import for conversion replace the folder and file path of this file
 #The headers in this file must be "Service Name, Slug, Heading, SubHeading, Content 1, CTA Heading, CTA SubHeading, Content 2" If these headers change, then the script will need to be updated
